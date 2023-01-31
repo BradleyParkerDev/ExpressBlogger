@@ -45,19 +45,33 @@ const sampleBlogs = [
   ];
 
 router.get('/all',function(req,res,next){
-    //res.send(res.json(sampleBlogs))
     res.json({ success: true, blogs: sampleBlogs });
 });
+
+
 router.get('/single/:title',function(req,res,next){
     //res.send(res.json(sampleBlogs))
-
-    const singleBlog = blogs.find((blog)=>{
+    const singleBlog = sampleBlogs.find((blog)=>{
         return blog.title === req.params.title
     })
-    res.json({ success: true, blog: singleBlog });
+    res.json({ 
+        success: true, 
+        blog: singleBlog 
+    });
+});
 
-
-
+router.delete('/delete/:title',function(req,res,next){
+    const blogTitleToDelete = req.params.title
+	
+    const blogIndex = sampleBlogs.findIndex((blog)=>{
+		return blog.title === blogTitleToDelete
+	})
+	
+    sampleBlogs.splice(blogIndex, 1)
+	
+    res.json({
+		success: true
+	})
 });
 /* GET users listing. */
 router.get('/', function(req, res, next) {
