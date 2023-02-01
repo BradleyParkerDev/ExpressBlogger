@@ -1,6 +1,10 @@
 const express = require('express');
 const app = require('../app');
 const router = express.Router();
+
+// This is a named import (require). Since /validation/blogs.js is exporting a whole object with key/value pairs, the constiable value that comes through the import will be that object. The easiest way to access the named functions is to write the key name in an object when you write the import (require) statement like this:
+const { validateBlogData } = require("../validation/blogs");
+
 const sampleBlogs = [
     {
           title: "dicta",
@@ -43,12 +47,13 @@ const sampleBlogs = [
       lastModified: "2022-03-22T15:14:39.819Z",
     },
   ];
-
+/////////////////////////////////////////////////////////////////////////////
+//A get request for all titles
 router.get('/all',function(req,res,next){
     res.json({ success: true, blogs: sampleBlogs });
 });
 
-
+// GET request for a single title
 router.get('/single/:title',function(req,res,next){
     //res.send(res.json(sampleBlogs))
     const singleBlog = sampleBlogs.find((blog)=>{
@@ -59,7 +64,7 @@ router.get('/single/:title',function(req,res,next){
         blog: singleBlog 
     });
 });
-
+// DELETE request for a single title
 router.delete('/delete/:title',function(req,res,next){
     const blogTitleToDelete = req.params.title
 	
@@ -73,6 +78,58 @@ router.delete('/delete/:title',function(req,res,next){
 		success: true
 	})
 });
+/////////////////////////////////////////////////////////////////////////////
+//POST request for a new blog
+router.post("/create-one", (req, res) => {
+  //try block, for validation code
+  try {
+    // anticipate fields of our post request /create-one
+    // parse out request data to local variables
+    const title = req.body.title;
+    const text = req.body.text;
+    const author = req.body.author;
+    
+    //create userData object fields
+    const blogData = {
+      title,
+      text,
+      author,
+      createdAt: new Date(),
+      lastModified: new Date(),
+    };
+
+    //pass user data object to our validate function
+    const blogDataCheck = validateBlogData(blogData);
+
+    if (blogDataCheck.isValid === false) {
+			throw Error(blogDataCheck.message)
+      // res.json({
+      //   success: false,
+      //   message: userDataCheck.message,
+      // });
+      // return;
+    }
+
+    sampleBlogs.push(blogData);
+
+    console.log("sampleBlogs", sampleBlogs);
+
+    res.json({
+      success: true,
+    });
+  } catch (e) {
+		
+// In the catch block, we always want to do 2 things: console.log the error and respond with an error object
+    console.log(e);
+    res.json({
+			success: false,
+			error: String(e)
+		});
+  }
+});
+
+
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   //res.send('blogs page');

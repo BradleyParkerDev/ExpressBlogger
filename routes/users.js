@@ -76,5 +76,5 @@ router.post("/create-one", (req, res) => {
 });
 
 module.exports = router;
-Footer
+
 
