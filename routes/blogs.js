@@ -174,7 +174,9 @@ router.put("/update-one/:title", (req,res)=>{
     } else {
       updatedBlog.author = originalBlog.author
     }
-
+    if (req.body.category !== undefined){
+      updatedBlog.category = req.body.category
+    }
     //Using the blogData validator
     const blogDataCheck = validateBlogData(updatedBlog);
 
