@@ -88,12 +88,13 @@ router.post("/create-one", (req, res) => {
     const title = req.body.title;
     const text = req.body.text;
     const author = req.body.author;
-    
+    const category = req.body.category;
     //create blogData object fields
     const blogData = {
       title,
       text,
       author,
+      category,
       createdAt: new Date(),
       lastModified: new Date(),
     };
@@ -176,6 +177,8 @@ router.put("/update-one/:title", (req,res)=>{
     }
     if (req.body.category !== undefined){
       updatedBlog.category = req.body.category
+    } else {
+      updatedBlog.category = originalBlog.category
     }
     //Using the blogData validator
     const blogDataCheck = validateBlogData(updatedBlog);

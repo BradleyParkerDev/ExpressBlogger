@@ -20,10 +20,17 @@ const validateBlogData = (blogData) => {
 			message: "An author's name is required, it must be a string and under 40 characters"
 		}
 	}
+
+
+	////////////////////////////////////////////////////////////////////////////////
 	// This is where I added the category to the validator
+	////////////////////////////////////////////////////////////////////////////////
+	//
 	const blogCategories = ["Lorem","ipsum","dolor","sit","amet"]
 	let containsBlogCategory = false;
 
+	//for loop compares blogData.category with the blogCategories array
+	//if the two arrays share an element, containsBlogCategory = true;
 	for(let i = 0; i < blogData.category.length; i++){
 		let j = 0;
 		while(j < blogCategories.length){
@@ -37,7 +44,7 @@ const validateBlogData = (blogData) => {
 			break;
 		}
 	}
-
+	////////////////////////////////////////////////////////////////////////////////
 
 
 	// Since all array's in JS are objects behind the scenes, typeof(array) will return 'object'. So in order to verify that the variable is actually an array, we have to do the Array.isArray() check.
