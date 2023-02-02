@@ -89,7 +89,7 @@ router.post("/create-one", (req, res) => {
     const text = req.body.text;
     const author = req.body.author;
     
-    //create userData object fields
+    //create blogData object fields
     const blogData = {
       title,
       text,
@@ -118,8 +118,7 @@ router.post("/create-one", (req, res) => {
       success: true,
     });
   } catch (e) {
-		
-// In the catch block, we always want to do 2 things: console.log the error and respond with an error object
+  // In the catch block, we always want to do 2 things: console.log the error and respond with an error object
     console.log(e);
     res.json({
 			success: false,
@@ -128,7 +127,80 @@ router.post("/create-one", (req, res) => {
   }
 });
 
+/////////////////////////////////////////////////////////////////////////////
+//PUT request to update sampleBlogs array
+router.put("/update-one/:title", (req,res)=>{
+ 
+  try{
+    //creating a variable for blog title to update
+    const titleToUpdate = req.params.title
 
+    //iterating through the sampleBlogs array,and locating the blog with the blog title
+    const originalBlog = sampleBlogs.find((blog)=>{
+      return blog.title === titleToUpdate
+    })
+
+    //iterating through the sampleBlogs array,and locating the blog's index with the blog title
+    const originalBlogIndex = sampleBlogs.findIndex((Blog)=>{
+      return Blog.title === titleToUpdate
+    })
+
+    // JSON message for a blog that couldn't be located
+    if (!originalBlog) {
+      res.json({
+        success: false,
+        message: "Could not find Blog in sampleBlogs."
+      })
+      return
+    }
+
+    //Creating an updated blog object
+	  const updatedBlog = {}
+
+    if (req.body.title !== undefined){
+      updatedBlog.title = req.body.title
+    } else {
+      updatedBlog.title = originalBlog.title
+    }
+
+    if (req.body.text !== undefined){
+      updatedBlog.text = req.body.text
+    } else {
+      updatedBlog.text = originalBlog.text
+    }
+
+    if (req.body.author !== undefined){
+      updatedBlog.author = req.body.author
+    } else {
+      updatedBlog.author = originalBlog.author
+    }
+
+    //Using the blogData validator
+    const blogDataCheck = validateBlogData(updatedBlog);
+
+    //Transfering the original createdAt and pdating the lastModified
+    updatedBlog.createdAt = originalBlog.createdAt;
+    updatedBlog.lastModified = new Date();
+
+    sampleBlogs[originalBlogIndex] = updatedBlog
+    if (blogDataCheck.isValid === false) {
+			throw Error(blogDataCheck.message)
+    }
+
+
+  } catch (e) {
+    // In the catch block, we always want to do 2 things: console.log the error and respond with an error object
+      console.log(e);
+      res.json({
+        success: false,
+        error: String(e)
+      });
+    }
+
+    res.json({
+        success: true
+    })
+})
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
