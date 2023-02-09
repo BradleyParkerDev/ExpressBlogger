@@ -152,7 +152,7 @@ router.put("/update-one/:title", async (req,res)=>{
         if (err) {
           res
             .status(400)
-            .send(`Error updating sample_blogs ${myQuery.title}!`);
+            .send(`Error updating blog titled ${myQuery.title}!`);
         } else {
           res.status(200).send('1 document updated')
         }
