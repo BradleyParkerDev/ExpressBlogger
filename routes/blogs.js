@@ -11,7 +11,6 @@ router.get('/all',async function(req,res,next){
   const blogs = await db()
   .collection('sample_blogs')
   .find({})
-  .limit(11)
   .toArray(function(err, result){
       if (err) {
         res.status(400).send("error fetching blogs")
