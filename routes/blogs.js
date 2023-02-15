@@ -1,7 +1,130 @@
-// const express = require('express');
-// const app = require('../app');
+const { v4: uuidv4 } = require("uuid");
+var express = require("express");
+var router = express.Router();
+
+
+const blogsController = require('../controllers/blogsController');
+
+// GET All Blog Posts
+router.get('/all',blogsController.getAllBlogs);
+router.post("/create-one", blogsController.createOneBlog);
+router.get('/get-one/:id', blogsController.getOneBlog);
+router.put("/update-one/:id", blogsController.updateOneBlog);
+router.delete("/delete-one/:id", blogsController.deleteOneBlog);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // const express = require('express');
+// // const app = require('../app');
+// // const router = express.Router();
+// // const { db } = require('../mongo');
+// const { v4: uuidv4 } = require("uuid");
+// const express = require("express");
 // const router = express.Router();
-// const { db } = require('../mongo');
+
+// const Blog = require('../models/Blogs');
+
+// /* GET home page. */
+// router.get('/all', async function(req, res) {
+
+//     //query blogs 
+//     try {
+//       const allBlogs = await Blog.find({});
+//       res.json({blogs: allBlogs });
+//     }catch(e){
+//       console.log(e);
+//     }
+// });
+
+// router.get('/single/:title', async function(req, res) {
+
+//   //query blogs 
+//   try {
+//     const singleBlog = await Blog.find({title:req.params.title});
+//     res.json({blog: singleBlog });
+//   }catch(e){
+//     console.log(e);
+//   }
+// });
+
+// router.post("/create-one", async function (req, res, next) {
+//     try {
+//       //parse out fields from POST request
+//       const title  = req.body.title 
+//       const text = req.body.text 
+//       const author = req.body.author
+//       const categories = req.body.category
+//       const year =  req.body.year;
+  
+//       //pass fields to new Blog model 
+//       //notice how it's way more organized and does the type checking for us
+//       const newBlog = new Blog({
+//           title,
+//           text,
+//           author,
+//           categories,
+//           year
+//       });
+  
+//       //save our new entry to the database 
+//       const savedData =  await newBlog.save();
+      
+//       //return the successful request to the user 
+//       res.json({
+//           success: true,
+//           blogs: savedData
+//       });
+  
+//     } catch (e) {
+//       console.log(typeof e);
+//       console.log(e);
+//       res.json({
+//         error: e.toString(),
+//       });
+//     }
+//   });
+
+//   router.put("/update-one/:title", async (req,res)=>{
+
+//     //parse out fields from POST request
+//     const title  = req.body.title 
+//     const text = req.body.text 
+//     const author = req.body.author
+//     const categories = req.body.category
+//     const year =  req.body.year;
+  
+//     //pass fields to new Blog model 
+//     //notice how it's way more organized and does the type checking for us
+//     const updatedBlog = new Blog({
+//       title,
+//       text,
+//       author,
+//       categories,
+//       year
+//     });
+    
+  
+
+    
+//   }
+
+
+
+
 
 // // This is a named import (require). Since /validation/blogs.js is exporting a whole object with key/value pairs, the constiable value that comes through the import will be that object. The easiest way to access the named functions is to write the key name in an object when you write the import (require) statement like this:
 // const { validateBlogData } = require("../validation/blogs");
@@ -407,3 +530,4 @@
 
 
 // */
+module.exports = router;
