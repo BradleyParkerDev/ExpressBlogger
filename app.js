@@ -4,6 +4,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
+
 //loads the contents of config.env
 require("dotenv").config({path: './config.env'});
 
@@ -14,11 +16,15 @@ require("dotenv").config({path: './config.env'});
 let { mongooseConnect } = require('./mongoose.js');
 mongooseConnect();
 
+
+
+
 //setup router for each set of routes
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const blogsRouter = require('./routes/blogs');
 // const port = 3001;
+
 //instatiate the actual express app
 const app = express();
 
@@ -26,11 +32,19 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+//add CORS middleware 
+app.use(cors());
+app.options("*", cors());
+
 //associating the labraries with the app
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
+
+
 //for hosting static files: css, html, images, etc.
 app.use(express.static(path.join(__dirname, 'public')));
 //we bind (associate) the routers to routes in our application
