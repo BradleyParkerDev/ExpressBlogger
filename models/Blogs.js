@@ -15,6 +15,6 @@ const blogSchema = new mongoose.Schema({
 
 //register model to collection
 const Blog = mongoose.model("sample_blogs", blogSchema);
-
+const User = 
 //make our model accessible to outside files 
 module.exports = Blog;
